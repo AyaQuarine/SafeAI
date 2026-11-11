@@ -27,8 +27,9 @@ Kit documentation / frontend / Docker fusionné dans le dépôt Common V1.0. Les
 - Copie propre : **173** passed, **4** skipped
 - Tests locaux avec corpus : **177** passed
 - Working tree : propre
-- Remote : non configuré
-- Push : non effectué
+- Remote : `https://github.com/AyaQuarine/SafeAI.git`
+- Push : effectué (`main` → `origin/main`)
+- Dernier commit poussé : `2c08ef7`
 
 Common V1.0 : fonctionnel hors ligne.  
 Docker demo : validé.  
@@ -46,7 +47,7 @@ Docker offline/models : non validé (optionnel).
 - [x] Premier commit local `bf72f48` + contrôles d'index.
 - [ ] Accorder le partage des captures / transcriptions réelles du PDF.
 - [ ] Ne pas présenter les exemples `/static/examples` comme des résultats réels.
-- [ ] Accord explicite de l'équipe pour publier (dépôt privé recommandé).
+- [x] Dépôt GitHub privé créé et `main` poussé (`origin`).
 
 ## Contenu à transmettre
 
