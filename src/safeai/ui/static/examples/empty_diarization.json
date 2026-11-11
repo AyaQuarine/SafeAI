@@ -1,0 +1,16 @@
+{
+  "session_id": "synthetic_common_empty",
+  "duration_s": 20.0,
+  "status": "empty",
+  "turns": [],
+  "speakers_estimated": 0,
+  "model_id": "synthetic_fixture_no_model",
+  "model_version": null,
+  "config_hash": null,
+  "offset_s": 0.0,
+  "processing_seconds": null,
+  "real_time_factor": null,
+  "unknown_count": 0,
+  "overlap_count": 0,
+  "error": null
+}

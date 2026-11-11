@@ -1,0 +1,50 @@
+{
+  "session_id": "synthetic_common_partial",
+  "duration_s": 24.0,
+  "offset_s": 0.0,
+  "language": "fr",
+  "status": "partial",
+  "provenance": "synthetic_fixture",
+  "source": "EXEMPLE_FICTIF_AUCUN_WAV",
+  "error": null,
+  "diagnostics": [
+    "Parole détectée entre 14,0–14,6 s avec chevauchement, sans texte exploitable.",
+    "Parole détectée entre 17,4–19,2 s sans transcription.",
+    "Cette session est fictive ; partial est intentionnel."
+  ],
+  "utterances": [
+    {
+      "session_id": "synthetic_common_partial",
+      "start_s": 2.0,
+      "end_s": 4.1,
+      "text": "Bonjour à tous.",
+      "language": "fr",
+      "speaker_id": "speaker_00",
+      "attribution": "attributed",
+      "audio_available": false,
+      "overlap": false
+    },
+    {
+      "session_id": "synthetic_common_partial",
+      "start_s": 7.0,
+      "end_s": 9.6,
+      "text": "Je voudrais donner un avis.",
+      "language": "fr",
+      "speaker_id": "speaker_01",
+      "attribution": "attributed",
+      "audio_available": false,
+      "overlap": false
+    },
+    {
+      "session_id": "synthetic_common_partial",
+      "start_s": 12.1,
+      "end_s": 13.0,
+      "text": "Je vous écoute.",
+      "language": "fr",
+      "speaker_id": "speaker_00",
+      "attribution": "attributed",
+      "audio_available": false,
+      "overlap": false
+    }
+  ]
+}

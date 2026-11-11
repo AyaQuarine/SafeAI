@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SafeAI — Diagnostic d'acquisition</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">SafeAI · Module 01</p>
+          <h1>Acquisition audio et contrôle de qualité</h1>
+        </div>
+        <p class="badge">V1 locale · non médicale · non certifiée</p>
+      </header>
+
+      <nav class="section-nav" aria-label="Navigation SafeAI">
+        <a class="section-link active" href="/" aria-current="page">Diagnostic acquisition</a>
+        <a class="section-link" href="/common">Common V1 · Texte & locuteurs</a>
+      </nav>
+
+      <section class="disclaimer" role="note">
+        SafeAI n'interprète pas le sens de la conversation et ne déclenche pas
+        d'alerte à ce stade. Cette console diagnostique le flux, la parole
+        détectée, la qualité et les incidents techniques.
+      </section>
+
+      <section class="panel controls">
+        <div class="field">
+          <label for="source">Source</label>
+          <select id="source">
+            <option value="file">Fichier audio (WAV)</option>
+            <option value="microphone">Microphone</option>
+            <option value="demo">Démonstration synthétique</option>
+          </select>
+        </div>
+        <div class="field" id="file-field">
+          <label for="file">Fichier local</label>
+          <input id="file" type="file" accept=".wav,.flac,audio/*" />
+        </div>
+        <div class="field hidden" id="device-field">
+          <label for="device">Microphone</label>
+          <select id="device"></select>
+        </div>
+        <label class="consent hidden" id="consent-field">
+          <input id="consent" type="checkbox" />
+          Je confirme le consentement de capture des participants
+        </label>
+        <label class="consent">
+          <input id="energy-vad" type="checkbox" />
+          Utiliser le VAD énergétique (tests / repli)
+        </label>
+        <div class="actions">
+          <button id="run" type="button">Analyser</button>
+          <button id="stop" type="button" class="ghost hidden">Arrêter</button>
+        </div>
+      </section>
+
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="kicker" id="source-label">Source : en attente</p>
+          <h2>Visualisation du signal</h2>
+          <p class="muted">
+            Les plages colorées distinguent parole et silence. Le moteur
+            conserve les deux flux : rien n'est effacé pour accélérer la suite.
+          </p>
+        </div>
+        <div class="wave-card">
+          <canvas id="wave" width="1100" height="220" aria-label="Signal audio"></canvas>
+          <div class="legend">
+            <span><i class="swatch speech"></i> Parole</span>
+            <span><i class="swatch silence"></i> Silence</span>
+            <span><i class="swatch degraded"></i> Qualité dégradée</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="metrics" id="metrics">
+        <article>
+          <p>État de capture</p>
+          <strong id="m-stream">—</strong>
+        </article>
+        <article>
+          <p>Activité vocale</p>
+          <strong id="m-speech">—</strong>
+        </article>
+        <article>
+          <p>Fréquence normalisée</p>
+          <strong id="m-rate">16 000 Hz</strong>
+        </article>
+        <article>
+          <p>Qualité du signal</p>
+          <strong id="m-quality">—</strong>
+        </article>
+      </section>
+
+      <section class="panel">
+        <div class="table-head">
+          <h2>Segments émis vers la suite du pipeline</h2>
+          <p id="summary" class="muted">Aucun segment pour le moment.</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Intervalle</th>
+                <th>Type</th>
+                <th>Qualité</th>
+                <th>Motif</th>
+              </tr>
+            </thead>
+            <tbody id="rows">
+              <tr class="empty">
+                <td colspan="4">Chargez un fichier, un microphone ou la démonstration synthétique.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel details">
+        <div>
+          <h2>Contrats publiés</h2>
+          <ul id="contracts" class="muted">
+            <li>AudioChunk, SpeechSegment, AudioQualityEvent — aucun échantillon brut n'est journalisé.</li>
+          </ul>
+        </div>
+        <div>
+          <h2>Incidents</h2>
+          <ul id="incidents" class="muted">
+            <li>Aucun incident signalé.</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    <script src="/static/app.js"></script>
+  </body>
+</html>

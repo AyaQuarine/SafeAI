@@ -1,0 +1,30 @@
+# Configuration du module d'acquisition SafeAI V1.
+# Les seuils sont une calibration initiale, à figer après évaluation sur les prises de développement.
+
+target_sample_rate: 16000
+channels: 1
+chunk_duration_s: 1.0
+
+vad:
+  backend: silero # silero (strict) | energy (tests seulement, jamais en repli silencieux)
+  threshold: 0.5
+  min_speech_duration_s: 0.25
+  min_silence_duration_s: 0.40
+  speech_pad_s: 0.15
+  window_samples: 512
+
+quality:
+  clipping_amplitude: 0.99
+  clipping_ratio_degraded: 0.01
+  clipping_ratio_unusable: 0.05
+  rms_silence: 0.005
+  noise_degraded: 0.04
+  peak_intense: 0.85
+
+queues:
+  audio_maxsize: 64
+  speech_maxsize: 64
+  quality_maxsize: 128
+
+publisher:
+  drop_oldest_on_full: true

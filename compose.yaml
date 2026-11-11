@@ -1,0 +1,35 @@
+services:
+  demo:
+    build:
+      context: .
+      target: ui
+    image: safeai-common-v1-demo:local
+    ports:
+      # 8766 hôte → 8765 conteneur : laisse libre le serveur natif sur 8765
+      - "127.0.0.1:8766:8765"
+    environment:
+      SAFEAI_DISABLE_MICROPHONE: "1"
+      PYTHONUNBUFFERED: "1"
+    restart: unless-stopped
+
+  offline:
+    profiles: ["models"]
+    build:
+      context: .
+      target: offline
+    image: safeai-common-v1-offline:local
+    environment:
+      PYTHONUNBUFFERED: "1"
+      SAFEAI_DISABLE_MICROPHONE: "1"
+      HF_HOME: /home/safeai/.cache/huggingface
+      HF_TOKEN: ${HF_TOKEN:-}
+    volumes:
+      - ./data/local_dev:/app/data/local_dev:ro
+      - ./outputs:/app/outputs
+      - hf_models:/home/safeai/.cache/huggingface
+      - whisper_models:/app/.cache
+    # No port exposure: offline service only executes commands with `docker compose run`.
+
+volumes:
+  hf_models:
+  whisper_models:

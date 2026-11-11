@@ -1,0 +1,76 @@
+# Virtual environments
+.venv/
+.venv-diarization/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local authorized audio — never commit recordings
+data/local_dev/*
+!data/local_dev/.gitkeep
+# Local French conversation datasets (manifests + audio stay off Git)
+/data/conversations_fr/
+data/conversations_fr/audio/
+data/conversations_fr/_cache/
+*.wav
+*.flac
+*.mp3
+*.ogg
+*.m4a
+
+# Models / caches downloaded at runtime
+.cache/
+*.onnx
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment secrets
+.env
+.env.*
+
+# Logs / sorties locales
+*.log
+logs/
+outputs/*
+!outputs/.gitkeep
+
+# Hugging Face token files (never commit)
+**/token
+**/*hf*token*
+
+# Additional local model weights
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+
+# Local models and checkpoints
+/models/
+/checkpoints/
+
+# Private diarization annotations (no synthetic RTTM fixtures in tests/)
+*.rttm
+
+# Local evaluation reports
+reports/local/
+
+# Local archives (not source of truth)
+*.zip

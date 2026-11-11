@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SafeAI — Common V1 · Démonstration</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <link rel="stylesheet" href="/static/common.css">
+</head>
+<body>
+<main class="app">
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">SafeAI · Common V1.0</p>
+      <h1>Conversation structurée</h1>
+      <p class="muted">Transcription horodatée, locuteurs anonymes et incertitudes explicites.</p>
+    </div>
+    <p class="badge">Hors ligne · Démonstration</p>
+  </header>
+  <nav class="section-nav" aria-label="Navigation SafeAI">
+    <a class="section-link" href="/">Diagnostic acquisition</a>
+    <a class="section-link active" href="/common" aria-current="page">Common V1 · Texte & locuteurs</a>
+  </nav>
+  <section class="disclaimer" role="note">
+    Cette vue lit les <strong>résultats JSON déjà produits</strong> par le pipeline. Elle ne lance ni Whisper
+    ni Community-1, ne réalise pas d'analyse de risque et n'envoie pas vos fichiers sélectionnés au serveur.
+    Les exemples intégrés sont <strong>entièrement fictifs</strong>.
+  </section>
+  <section class="panel common-inputs" aria-label="Choix des données">
+    <div class="field">
+      <label for="example">Exemple fictif</label>
+      <select id="example">
+        <option value="partial">Conversation partielle avec chevauchement</option>
+        <option value="completed">Conversation avec attribution</option>
+        <option value="empty">Silence confirmé</option>
+      </select>
+    </div>
+    <button id="load-example" type="button">Afficher l'exemple</button>
+    <div class="file-pair">
+      <div class="field">
+        <label for="aligned-file">JSON aligné (obligatoire)</label>
+        <input id="aligned-file" type="file" accept=".json,application/json">
+      </div>
+      <div class="field">
+        <label for="diarization-file">JSON diarisation (facultatif)</label>
+        <input id="diarization-file" type="file" accept=".json,application/json">
+      </div>
+    </div>
+    <button id="load-files" type="button" class="ghost">Ouvrir mes JSON localement</button>
+    <p class="muted privacy-hint">Les fichiers sont lus par le navigateur, sans téléversement vers une API.</p>
+  </section>
+  <p id="load-error" class="message-error hidden" role="alert"></p>
+  <section class="metrics common-metrics" aria-label="Résumé de session">
+    <article><p>Statut</p><strong id="m-status">—</strong></article>
+    <article><p>Durée</p><strong id="m-duration">—</strong></article>
+    <article><p>Locuteurs</p><strong id="m-speakers">—</strong></article>
+    <article><p>Énoncés</p><strong id="m-utterances">—</strong></article>
+  </section>
+  <section class="panel" aria-labelledby="timeline-title">
+    <div class="table-head">
+      <h2 id="timeline-title">Tours de parole</h2>
+      <p id="timeline-subtitle" class="muted">Une barre par locuteur ; intersections conservées.</p>
+    </div>
+    <div id="speaker-timeline" class="speaker-timeline" aria-label="Chronologie des locuteurs"></div>
+    <p class="muted" id="timeline-empty"></p>
+  </section>
+  <div class="common-columns">
+    <section class="panel" aria-labelledby="transcript-title">
+      <div class="table-head"><h2 id="transcript-title">Énoncés alignés</h2><p class="muted" id="transcript-count"></p></div>
+      <div class="utterances" id="utterances" aria-live="polite"></div>
+    </section>
+    <section class="panel" aria-labelledby="diag-title">
+      <h2 id="diag-title">Incertitudes et diagnostics</h2>
+      <ul id="diagnostics" class="diagnostics"></ul>
+      <h2 class="subheading">Métadonnées</h2>
+      <dl id="metadata" class="metadata"></dl>
+    </section>
+  </div>
+  <p class="muted disclaimer-bottom">SafeAI est un projet pédagogique non médical. Les étiquettes de locuteurs sont anonymes et ne constituent pas une identification personnelle.</p>
+</main>
+<script defer src="/static/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+{
+  "session_id": "synthetic_common_completed",
+  "duration_s": 12.0,
+  "status": "completed",
+  "turns": [
+    {
+      "session_id": "synthetic_common_completed",
+      "start_s": 1.4,
+      "end_s": 3.5,
+      "speaker_id": "speaker_00",
+      "overlap": false,
+      "confidence": null,
+      "status": "completed"
+    },
+    {
+      "session_id": "synthetic_common_completed",
+      "start_s": 5.1,
+      "end_s": 7.2,
+      "speaker_id": "speaker_00",
+      "overlap": false,
+      "confidence": null,
+      "status": "completed"
+    }
+  ],
+  "speakers_estimated": 1,
+  "model_id": "synthetic_fixture_no_model",
+  "model_version": null,
+  "config_hash": null,
+  "offset_s": 0.0,
+  "processing_seconds": null,
+  "real_time_factor": null,
+  "unknown_count": 0,
+  "overlap_count": 0,
+  "error": null
+}

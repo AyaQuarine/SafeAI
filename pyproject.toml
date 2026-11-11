@@ -1,0 +1,73 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "safeai"
+version = "1.0.0"
+description = "SafeAI Common V1.0 — offline functional pipeline and demonstration UI"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Proprietary — usage pédagogique" }
+authors = [{ name = "SafeAI" }]
+dependencies = [
+    "numpy>=1.26,<3",
+    "scipy>=1.11",
+    "soundfile>=0.12",
+    "sounddevice>=0.4.6",
+    "pyyaml>=6.0",
+    "silero-vad>=5.1",
+    "onnxruntime>=1.17",
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.27",
+    "python-multipart>=0.0.9",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "httpx>=0.27",
+]
+ui = [
+    "fastapi>=0.110",
+    "python-multipart>=0.0.9",
+    "uvicorn[standard]>=0.27",
+]
+microphone = [
+    "sounddevice>=0.4.6",
+]
+vad = [
+    "silero-vad>=5.1",
+    "onnxruntime>=1.17",
+]
+transcription = [
+    "faster-whisper>=1.1",
+    "jiwer>=3.0",
+]
+diarization = [
+    "pyannote.audio>=4.0",
+    "huggingface-hub",
+]
+
+[project.scripts]
+safeai-acquisition = "safeai.acquisition.cli:main"
+safeai-diarization = "safeai.diarization.cli:main"
+safeai-pipeline = "safeai.pipeline.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"safeai.ui" = [
+    "static/*.html",
+    "static/*.css",
+    "static/*.js",
+    "static/examples/*.json",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]

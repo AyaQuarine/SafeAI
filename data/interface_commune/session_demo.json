@@ -1,0 +1,55 @@
+{
+  "session_id": "session_interface_demo",
+  "duration_s": 20.0,
+  "offset_s": 0.0,
+  "language": "fr",
+  "status": "completed",
+  "provenance": "synthetic_fixture",
+  "source": "data/interface_commune/session_demo.json",
+  "utterances": [
+    {
+      "session_id": "session_interface_demo",
+      "start_s": 5.0,
+      "end_s": 7.2,
+      "text": "Bonjour à tous.",
+      "language": "fr",
+      "speaker_id": "speaker_00",
+      "attribution": "attributed",
+      "audio_available": false,
+      "overlap": false
+    },
+    {
+      "session_id": "session_interface_demo",
+      "start_s": 8.1,
+      "end_s": 10.0,
+      "text": "Je voudrais parler.",
+      "language": "fr",
+      "speaker_id": "speaker_01",
+      "attribution": "attributed",
+      "audio_available": false,
+      "overlap": false
+    },
+    {
+      "session_id": "session_interface_demo",
+      "start_s": 10.0,
+      "end_s": 10.8,
+      "text": "D'accord.",
+      "language": "fr",
+      "speaker_id": "speaker_00",
+      "attribution": "overlap",
+      "audio_available": false,
+      "overlap": true
+    },
+    {
+      "session_id": "session_interface_demo",
+      "start_s": 10.2,
+      "end_s": 11.0,
+      "text": "Je voudrais parler.",
+      "language": "fr",
+      "speaker_id": "speaker_01",
+      "attribution": "overlap",
+      "audio_available": false,
+      "overlap": true
+    }
+  ]
+}

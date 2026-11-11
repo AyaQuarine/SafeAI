@@ -1,0 +1,35 @@
+{
+  "session_id": "synthetic_common_completed",
+  "duration_s": 12.0,
+  "offset_s": 0.0,
+  "language": "fr",
+  "status": "completed",
+  "provenance": "synthetic_fixture",
+  "source": "EXEMPLE_FICTIF_AUCUN_WAV",
+  "error": null,
+  "diagnostics": [],
+  "utterances": [
+    {
+      "session_id": "synthetic_common_completed",
+      "start_s": 1.5,
+      "end_s": 3.4,
+      "text": "Bonjour, nous testons le pipeline commun.",
+      "language": "fr",
+      "speaker_id": "speaker_00",
+      "attribution": "attributed",
+      "audio_available": false,
+      "overlap": false
+    },
+    {
+      "session_id": "synthetic_common_completed",
+      "start_s": 5.2,
+      "end_s": 7.1,
+      "text": "Tout fonctionne pour cet exemple fictif.",
+      "language": "fr",
+      "speaker_id": "speaker_00",
+      "attribution": "attributed",
+      "audio_available": false,
+      "overlap": false
+    }
+  ]
+}

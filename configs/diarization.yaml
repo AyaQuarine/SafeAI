@@ -1,0 +1,13 @@
+# Configuration du module de diarisation SafeAI V1.
+# Aucun modèle n'est téléchargé au chargement de ce fichier.
+
+backend: pyannote
+model_id: pyannote/speaker-diarization-community-1
+# Révision Hugging Face du 29 septembre 2025, transmise à from_pretrained().
+model_version: 3533c8cf8e369892e6b79ff1bf80f7b0286a54ee
+min_speakers: null
+max_speakers: null
+# exclusive: true ne sert qu'à un alignement texte ultérieur.
+# La sortie V1 conserve les chevauchements.
+exclusive: false
+offset_s: 0.0

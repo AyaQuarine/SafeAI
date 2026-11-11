@@ -1,0 +1,7 @@
+# Treat media as binary so whitespace checks do not false-positive
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary

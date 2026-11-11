@@ -1,0 +1,14 @@
+{
+  "session_id": "synthetic_common_empty",
+  "duration_s": 20.0,
+  "offset_s": 0.0,
+  "language": "fr",
+  "status": "empty",
+  "provenance": "synthetic_fixture",
+  "source": "EXEMPLE_FICTIF_AUCUN_WAV",
+  "error": null,
+  "diagnostics": [
+    "Démonstration synthétique de silence. Aucun ASR ni modèle exécuté."
+  ],
+  "utterances": []
+}
