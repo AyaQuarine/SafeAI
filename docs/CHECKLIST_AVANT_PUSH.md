@@ -17,8 +17,20 @@ Kit documentation / frontend / Docker fusionné dans le dépôt Common V1.0. Les
 | `docker compose build demo` | **OK** — image légère `[ui]` sans ffmpeg/torch CUDA |
 | `docker compose up -d demo` | **OK** — `http://127.0.0.1:8766/common` (micro désactivé) |
 | Profil `models` / offline | Non validé — optionnel |
-| Dépôt Git local | **Absent** (pas encore de `.git`) |
-| Push GitHub | **Non effectué** |
+
+## État Git — 11 novembre 2026
+
+- Branche : `main`
+- Commit initial : `bf72f48`
+- Fichiers enregistrés : **146**
+- Copie propre : **173** passed, **4** skipped
+- Tests locaux avec corpus : **177** passed
+- Remote GitHub : non configuré
+- Push : non effectué
+
+Common V1.0 : fonctionnel hors ligne.  
+Docker demo : validé.  
+Docker offline/models : non validé (optionnel).
 
 ## Avant publication
 
@@ -29,9 +41,10 @@ Kit documentation / frontend / Docker fusionné dans le dépôt Common V1.0. Les
 - [x] `docker compose build demo` + `up -d demo` → `/common` sur `8766`.
 - [ ] **Optionnel** : `docker compose --profile models build offline`.
 - [x] Confirmer R01 / R02 / R06 déjà validés (R06 reste `partial`).
-- [ ] `git status` / `git diff --check` — aucun WAV, `.env`, token HF, `.cache`, venv, `outputs/` privés.
+- [x] Premier commit local `bf72f48` + contrôles d'index.
+- [ ] Accorder le partage des captures / transcriptions réelles du PDF.
 - [ ] Ne pas présenter les exemples `/static/examples` comme des résultats réels.
-- [ ] Accord explicite de l'équipe pour publier.
+- [ ] Accord explicite de l'équipe pour publier (dépôt privé recommandé).
 
 ## Contenu à transmettre
 

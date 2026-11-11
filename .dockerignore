@@ -32,3 +32,4 @@ reports/local
 build
 dist
 *.egg-info
+**/*.zip
