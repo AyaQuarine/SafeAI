@@ -2,7 +2,7 @@
 
 Kit documentation / frontend / Docker fusionné dans le dépôt Common V1.0. Les modules communs gelés (acquisition, Whisper, Community-1, alignement, pipeline) n'ont pas été réécrits.
 
-## État local (10 novembre 2026)
+## État local (11 novembre 2026)
 
 | Vérification | Résultat |
 | --- | --- |
@@ -22,10 +22,12 @@ Kit documentation / frontend / Docker fusionné dans le dépôt Common V1.0. Les
 
 - Branche : `main`
 - Commit initial : `bf72f48`
+- Commit de finalisation : `f129976`
 - Fichiers enregistrés : **146**
 - Copie propre : **173** passed, **4** skipped
 - Tests locaux avec corpus : **177** passed
-- Remote GitHub : non configuré
+- Working tree : propre
+- Remote : non configuré
 - Push : non effectué
 
 Common V1.0 : fonctionnel hors ligne.  
