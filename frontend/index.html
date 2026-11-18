@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Safe-AI Voice Detection</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      margin: 0;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 650px;
+      margin: auto;
+    }
+
+    .card {
+      background: #1e293b;
+      padding: 30px;
+      border-radius: 16px;
+      margin-top: 20px;
+    }
+
+    h1 {
+      color: #38bdf8;
+    }
+
+    button {
+      border: none;
+      padding: 14px 22px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      margin: 5px;
+    }
+
+    #start {
+      background: #38bdf8;
+    }
+
+    #stop {
+      background: #f87171;
+    }
+
+    button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .bar {
+      background: #334155;
+      border-radius: 8px;
+      overflow: hidden;
+      height: 12px;
+      margin: 6px 0 16px;
+    }
+
+    .fill {
+      background: #38bdf8;
+      height: 100%;
+    }
+
+    .emotion {
+      font-size: 28px;
+      font-weight: bold;
+      color: #38bdf8;
+    }
+
+    #status {
+      color: #cbd5e1;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <h1>Safe-AI Voice Detection</h1>
+    <p>Speech emotion recognition using WavLM</p>
+
+    <div class="card">
+      <h2>Microphone Analysis</h2>
+
+      <button id="start">Start Recording</button>
+      <button id="stop" disabled>Stop & Analyze</button>
+
+      <p id="status">Ready to record</p>
+    </div>
+
+    <div class="card" id="results" hidden>
+      <h2>Prediction Results</h2>
+
+      <p>Detected emotion:</p>
+      <div class="emotion" id="emotion"></div>
+
+      <p id="confidence"></p>
+      <p id="duration"></p>
+
+      <h3>Emotion probabilities</h3>
+      <div id="probabilities"></div>
+    </div>
+
+    <p style="color:#94a3b8;font-size:12px">
+      Research prototype. Emotion predictions do not
+      establish psychological stress or emergencies.
+    </p>
+
+  </div>
+
+  <script>
+    const API_URL = "http://127.0.0.1:8000/predict";
+
+    const startBtn = document.getElementById("start");
+    const stopBtn = document.getElementById("stop");
+    const statusEl = document.getElementById("status");
+    const resultsEl = document.getElementById("results");
+
+    let audioContext;
+    let stream;
+    let source;
+    let processor;
+    let chunks = [];
+    let recording = false;
+    let startedAt;
+    let stopTimer;
+
+    function encodeWav(samples, sampleRate) {
+      const buffer = new ArrayBuffer(44 + samples.length * 2);
+      const view = new DataView(buffer);
+
+      function writeString(offset, text) {
+        for (let i = 0; i < text.length; i++) {
+          view.setUint8(offset + i, text.charCodeAt(i));
+        }
+      }
+
+      writeString(0, "RIFF");
+      view.setUint32(4, 36 + samples.length * 2, true);
+      writeString(8, "WAVE");
+      writeString(12, "fmt ");
+      view.setUint32(16, 16, true);
+      view.setUint16(20, 1, true);
+      view.setUint16(22, 1, true);
+      view.setUint32(24, sampleRate, true);
+      view.setUint32(28, sampleRate * 2, true);
+      view.setUint16(32, 2, true);
+      view.setUint16(34, 16, true);
+      writeString(36, "data");
+      view.setUint32(40, samples.length * 2, true);
+
+      for (let i = 0; i < samples.length; i++) {
+        const s = Math.max(-1, Math.min(1, samples[i]));
+        view.setInt16(
+          44 + i * 2,
+          s < 0 ? s * 0x8000 : s * 0x7fff,
+          true
+        );
+      }
+
+      return new Blob([buffer], { type: "audio/wav" });
+    }
+
+    function mergeChunks(chunks) {
+      const length = chunks.reduce((n, c) => n + c.length, 0);
+      const result = new Float32Array(length);
+
+      let offset = 0;
+      for (const chunk of chunks) {
+        result.set(chunk, offset);
+        offset += chunk.length;
+      }
+
+      return result;
+    }
+
+    function resample(samples, fromRate, toRate) {
+      if (fromRate === toRate) return samples;
+
+      const length = Math.round(
+        samples.length * toRate / fromRate
+      );
+
+      const output = new Float32Array(length);
+      const ratio = fromRate / toRate;
+
+      for (let i = 0; i < length; i++) {
+        const position = i * ratio;
+        const left = Math.floor(position);
+        const right = Math.min(left + 1, samples.length - 1);
+        const fraction = position - left;
+
+        output[i] =
+          samples[left] * (1 - fraction) +
+          samples[right] * fraction;
+      }
+
+      return output;
+    }
+
+    async function startRecording() {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({
+          audio: true
+        });
+
+        audioContext = new AudioContext();
+
+        source = audioContext.createMediaStreamSource(stream);
+        processor = audioContext.createScriptProcessor(4096, 1, 1);
+
+        chunks = [];
+        recording = true;
+        startedAt = Date.now();
+
+        processor.onaudioprocess = event => {
+          if (!recording) return;
+
+          const samples = event.inputBuffer.getChannelData(0);
+          chunks.push(new Float32Array(samples));
+        };
+
+        source.connect(processor);
+        processor.connect(audioContext.destination);
+
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+        resultsEl.hidden = true;
+
+        statusEl.textContent = "Recording... Speak now.";
+
+        stopTimer = setTimeout(stopRecording, 10000);
+
+      } catch (error) {
+        statusEl.textContent =
+          "Microphone error: " + error.message;
+      }
+    }
+
+    async function stopRecording() {
+      if (!recording) return;
+
+      recording = false;
+      clearTimeout(stopTimer);
+
+      startBtn.disabled = true;
+      stopBtn.disabled = true;
+
+      statusEl.textContent = "Processing audio...";
+
+      const sampleRate = audioContext.sampleRate;
+
+      processor.disconnect();
+      source.disconnect();
+
+      stream.getTracks().forEach(track => track.stop());
+
+      await audioContext.close();
+
+      const samples = mergeChunks(chunks);
+
+      if (samples.length === 0) {
+        statusEl.textContent = "No audio recorded.";
+        startBtn.disabled = false;
+        return;
+      }
+
+      const audio16k = resample(
+        samples,
+        sampleRate,
+        16000
+      );
+
+      const wav = encodeWav(audio16k, 16000);
+
+      const formData = new FormData();
+      formData.append("file", wav, "recording.wav");
+
+      statusEl.textContent = "Analyzing with WavLM...";
+
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          body: formData
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            typeof data.detail === "string"
+              ? data.detail
+              : "Prediction failed"
+          );
+        }
+
+        displayResults(data);
+        statusEl.textContent = "Analysis complete.";
+
+      } catch (error) {
+        statusEl.textContent =
+          "Error: " + error.message;
+      } finally {
+        startBtn.disabled = false;
+      }
+    }
+
+    function displayResults(data) {
+      resultsEl.hidden = false;
+
+      document.getElementById("emotion").textContent =
+        data.predicted_emotion.toUpperCase();
+
+      document.getElementById("confidence").textContent =
+        "Model probability: " +
+        (data.confidence * 100).toFixed(1) + "%";
+
+      document.getElementById("duration").textContent =
+        "Duration: " + data.duration_seconds + " seconds";
+
+      const container =
+        document.getElementById("probabilities");
+
+      container.replaceChildren();
+
+      const sorted = Object.entries(data.probabilities)
+        .sort((a, b) => b[1] - a[1]);
+
+      for (const [emotion, probability] of sorted) {
+        const row = document.createElement("div");
+        row.className = "row";
+
+        const label = document.createElement("span");
+        label.textContent = emotion;
+
+        const value = document.createElement("span");
+        value.textContent =
+          (probability * 100).toFixed(1) + "%";
+
+        row.append(label, value);
+
+        const bar = document.createElement("div");
+        bar.className = "bar";
+
+        const fill = document.createElement("div");
+        fill.className = "fill";
+        fill.style.width = (probability * 100) + "%";
+
+        bar.appendChild(fill);
+        container.append(row, bar);
+      }
+    }
+
+    startBtn.addEventListener("click", startRecording);
+    stopBtn.addEventListener("click", stopRecording);
+  </script>
+</body>
+
+</html>
